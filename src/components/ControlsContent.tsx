@@ -1,5 +1,5 @@
 import { Box, Chip, Slider, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
-import { useAppStore } from '@/store/useAppStore'
+import { cellSizeToResolutionValue, resolutionValueToCellSize, useAppStore } from '@/store/useAppStore'
 
 const ControlsContent = () => {
   const cellSize = useAppStore(state => state.cellSize)
@@ -11,10 +11,7 @@ const ControlsContent = () => {
   const setPatternIntensity = useAppStore(state => state.setPatternIntensity)
   const setSpeedIntensity = useAppStore(state => state.setSpeedIntensity)
 
-  // Resolution range handled entirely by the WebGL renderer.
-  const resolutionMin = 1
-  const resolutionMax = 35
-  const resolutionSum = resolutionMin + resolutionMax
+  const normalizedResolution = cellSizeToResolutionValue(cellSize)
 
   return (
     <>
@@ -24,17 +21,24 @@ const ControlsContent = () => {
             Resolution
           </Typography>
 
-          <Chip label={resolutionSum - cellSize} size="small" variant="outlined" sx={{ height: 24, fontWeight: 500 }} />
+          <Chip
+            label={normalizedResolution.toFixed(2)}
+            size="small"
+            variant="outlined"
+            sx={{ height: 24, fontWeight: 500 }}
+          />
         </Box>
 
         <Slider
           aria-label="Resolution"
-          min={resolutionMin}
-          max={resolutionMax}
+          min={0}
+          max={1}
           size="small"
-          step={1}
-          value={resolutionSum - cellSize}
-          onChange={(_, value) => setCellSize(resolutionSum - (value as number))}
+          step={0.01}
+          value={normalizedResolution}
+          onChange={(_, value) => {
+            if (typeof value === 'number') setCellSize(resolutionValueToCellSize(value))
+          }}
         />
       </Box>
 
