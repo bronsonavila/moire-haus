@@ -2,9 +2,9 @@ import { create } from 'zustand'
 
 interface AppState {
   // State
+  animationPhase: number
   frequency: number // 0 to 1
   isCanvasReady: boolean
-  patternOffset: number
   resolution: number // 0 to 1
   selectedPalette: number
   speed: number // 0 to 1
@@ -16,9 +16,9 @@ interface AppState {
   speedScalar: () => number
 
   // Actions
+  setAnimationPhase: (phase: number | ((previous: number) => number)) => void
   setCanvasReady: (ready: boolean) => void
   setFrequency: (frequency: number) => void
-  setPatternOffset: (offset: number | ((previous: number) => number)) => void
   setResolution: (resolution: number) => void
   setSelectedPalette: (index: number) => void
   setSpeed: (speed: number) => void
@@ -51,9 +51,9 @@ export const resolutionValueToCellSize = (value: number) => {
 export const useAppStore = create<AppState>((set, get) => ({
   // Initial State
 
+  animationPhase: 0,
   frequency: 0.5,
   isCanvasReady: false,
-  patternOffset: 0,
   resolution: 0.75,
   selectedPalette: 0,
   speed: 0.25,
@@ -89,14 +89,14 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   // Actions
 
+  setAnimationPhase: (phase: number | ((previous: number) => number)) =>
+    set(state => ({
+      animationPhase: typeof phase === 'function' ? phase(state.animationPhase) : phase,
+    })),
+
   setCanvasReady: (ready: boolean) => set({ isCanvasReady: ready }),
 
-  setFrequency: (frequency: number) => set({ frequency, patternOffset: 0 }),
-
-  setPatternOffset: (offset: number | ((previous: number) => number)) =>
-    set(state => ({
-      patternOffset: typeof offset === 'function' ? offset(state.patternOffset) : offset,
-    })),
+  setFrequency: (frequency: number) => set({ frequency, animationPhase: 0 }),
 
   setResolution: (resolution: number) => set({ resolution: clamp(resolution, 0, 1) }),
 

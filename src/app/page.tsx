@@ -9,7 +9,7 @@ const HomePage = () => {
   const cellSize = useAppStore(state => state.cellSize())
   const speed = useAppStore(state => state.speedScalar())
   const windowSize = useAppStore(state => state.windowSize)
-  const setPatternOffset = useAppStore(state => state.setPatternOffset)
+  const setAnimationPhase = useAppStore(state => state.setAnimationPhase)
   const setWindowSize = useAppStore(state => state.setWindowSize)
 
   const requestRef = useRef<number>()
@@ -19,10 +19,10 @@ const HomePage = () => {
   const rows = Math.ceil(windowSize.height / cellSize)
 
   const animate = useCallback(() => {
-    setPatternOffset(previous => Number((previous + speedRef.current).toFixed(4)))
+    setAnimationPhase(previous => Number((previous + speedRef.current).toFixed(4)))
 
     requestRef.current = requestAnimationFrame(animate)
-  }, [setPatternOffset])
+  }, [setAnimationPhase])
 
   useEffect(() => {
     speedRef.current = speed

@@ -25,7 +25,7 @@ precision highp float;
 
 uniform vec2 u_resolution;
 uniform float u_patternBase;
-uniform float u_patternOffset;
+uniform float u_animationPhase;
 uniform sampler2D u_palette;
 
 void main() {
@@ -37,9 +37,9 @@ void main() {
   float maxDistance = length(center);
   float progress = distance / maxDistance;
 
-  // Split precision: (progress * base) % 1 + (progress * offset) % 1
+  // Split precision: (progress * base) % 1 + (progress * phase) % 1
   float val1 = fract(progress * u_patternBase);
-  float val2 = fract(progress * u_patternOffset);
+  float val2 = fract(progress * u_animationPhase);
   float tRaw = fract(val1 + val2);
 
   // Triangle wave
@@ -59,8 +59,8 @@ type CanvasProps = {
 }
 
 const Canvas = ({ cellSize, columns, rows }: CanvasProps) => {
+  const animationPhase = useAppStore(state => state.animationPhase)
   const frequency = useAppStore(state => state.frequencyScalar())
-  const offset = useAppStore(state => state.patternOffset)
   const selectedPalette = useAppStore(state => state.selectedPalette)
   const setCanvasReady = useAppStore(state => state.setCanvasReady)
 
@@ -125,10 +125,10 @@ const Canvas = ({ cellSize, columns, rows }: CanvasProps) => {
 
     // Get uniform locations.
     uniformsRef.current = {
-      resolution: gl.getUniformLocation(program, 'u_resolution'),
-      patternBase: gl.getUniformLocation(program, 'u_patternBase'),
-      patternOffset: gl.getUniformLocation(program, 'u_patternOffset'),
+      animationPhase: gl.getUniformLocation(program, 'u_animationPhase'),
       palette: gl.getUniformLocation(program, 'u_palette'),
+      patternBase: gl.getUniformLocation(program, 'u_patternBase'),
+      resolution: gl.getUniformLocation(program, 'u_resolution'),
     }
 
     const createPaletteTexture = (data: Uint8Array) => {
@@ -174,9 +174,9 @@ const Canvas = ({ cellSize, columns, rows }: CanvasProps) => {
     gl.viewport(0, 0, columns, rows)
 
     // Set uniforms.
-    gl.uniform2f(uniforms.resolution, columns, rows)
+    gl.uniform1f(uniforms.animationPhase, animationPhase)
     gl.uniform1f(uniforms.patternBase, frequency)
-    gl.uniform1f(uniforms.patternOffset, offset)
+    gl.uniform2f(uniforms.resolution, columns, rows)
 
     // Bind the selected palette texture.
     const paletteTexture = textures[selectedPalette] || textures[0]
@@ -188,7 +188,7 @@ const Canvas = ({ cellSize, columns, rows }: CanvasProps) => {
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
 
     setCanvasReady(true)
-  }, [cellSize, columns, frequency, offset, rows, selectedPalette, setCanvasReady])
+  }, [animationPhase, cellSize, columns, frequency, rows, selectedPalette, setCanvasReady])
 
   return (
     <canvas
