@@ -1,6 +1,47 @@
 import { Box, Chip, Slider, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
 import { useAppStore } from '@/store/useAppStore'
 
+const PALETTE_COLORS = [
+  '#3577ae', // TEAL_NAVY
+  '#35a1ab', // MINT_INDIGO
+  '#55c667', // LIME_PURPLE
+  '#db5087', // ROSE_VIOLET
+  '#c55a68', // PEACH_CHARCOAL
+  '#fd9a6a', // GOLD_NOIR
+  '#f0a04b', // AMBER_BROWN
+]
+
+type ControlSliderProps = {
+  label: string
+  max?: number
+  min?: number
+  onChange: (value: number) => void
+  step?: number
+  value: number
+}
+
+const ControlSlider = ({ label, max = 1, min = 0, onChange, step = 0.01, value }: ControlSliderProps) => (
+  <Box>
+    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
+      <Typography sx={{ color: 'text.secondary' }} variant="body2">
+        {label}
+      </Typography>
+
+      <Chip label={value.toFixed(2)} size="small" sx={{ height: 24, fontWeight: 500 }} variant="outlined" />
+    </Box>
+
+    <Slider
+      aria-label={label}
+      max={max}
+      min={min}
+      onChange={(_, value) => typeof value === 'number' && onChange(value)}
+      size="small"
+      step={step}
+      value={value}
+    />
+  </Box>
+)
+
 const ControlsContent = () => {
   const resolution = useAppStore(state => state.resolution)
   const colorShift = useAppStore(state => state.colorShift)
@@ -13,70 +54,14 @@ const ControlsContent = () => {
 
   return (
     <>
-      <Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Resolution
-          </Typography>
+      <ControlSlider label="Resolution" onChange={setResolution} value={resolution} />
 
-          <Chip label={resolution.toFixed(2)} size="small" variant="outlined" sx={{ height: 24, fontWeight: 500 }} />
-        </Box>
+      <ControlSlider label="Frequency" onChange={setFrequency} value={frequency} />
 
-        <Slider
-          aria-label="Resolution"
-          min={0}
-          max={1}
-          size="small"
-          step={0.01}
-          value={resolution}
-          onChange={(_, value) => {
-            if (typeof value === 'number') setResolution(value)
-          }}
-        />
-      </Box>
+      <ControlSlider label="Speed" onChange={setSpeed} value={speed} />
 
       <Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Frequency
-          </Typography>
-
-          <Chip label={frequency.toFixed(2)} size="small" variant="outlined" sx={{ height: 24, fontWeight: 500 }} />
-        </Box>
-
-        <Slider
-          aria-label="Frequency"
-          min={0}
-          max={1}
-          size="small"
-          step={0.01}
-          value={frequency}
-          onChange={(_, value) => setFrequency(value as number)}
-        />
-      </Box>
-
-      <Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Speed
-          </Typography>
-
-          <Chip label={speed.toFixed(2)} size="small" variant="outlined" sx={{ height: 24, fontWeight: 500 }} />
-        </Box>
-
-        <Slider
-          aria-label="Speed"
-          min={0}
-          max={1}
-          size="small"
-          step={0.01}
-          value={speed}
-          onChange={(_, value) => setSpeed(value as number)}
-        />
-      </Box>
-
-      <Box>
-        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5 }}>
+        <Typography sx={{ color: 'text.secondary', mb: 0.5 }} variant="body2">
           Palette
         </Typography>
 
@@ -94,43 +79,19 @@ const ControlsContent = () => {
               padding: '8px',
               transition: 'border-color 0.2s ease, background-color 0.2s ease',
               '&.Mui-selected': {
-                border: '2px solid rgba(0,0,0,0.4)',
                 backgroundColor: 'rgba(0,0,0,0.03)',
+                border: '2px solid rgba(0,0,0,0.4)',
               },
-              '&:hover': {
-                backgroundColor: 'rgba(0,0,0,0.02)',
-              },
+              '&:hover': { backgroundColor: 'rgba(0,0,0,0.02)' },
             },
           }}
           value={colorShift}
         >
-          <ToggleButton value={0}>
-            <Box sx={{ width: 24, height: 24, backgroundColor: '#3577ae', borderRadius: 1 }} />
-          </ToggleButton>
-
-          <ToggleButton value={1}>
-            <Box sx={{ width: 24, height: 24, backgroundColor: '#35a1ab', borderRadius: 1 }} />
-          </ToggleButton>
-
-          <ToggleButton value={2}>
-            <Box sx={{ width: 24, height: 24, backgroundColor: '#55c667', borderRadius: 1 }} />
-          </ToggleButton>
-
-          <ToggleButton value={3}>
-            <Box sx={{ width: 24, height: 24, backgroundColor: '#db5087', borderRadius: 1 }} />
-          </ToggleButton>
-
-          <ToggleButton value={4}>
-            <Box sx={{ width: 24, height: 24, backgroundColor: '#c55a68', borderRadius: 1 }} />
-          </ToggleButton>
-
-          <ToggleButton value={5}>
-            <Box sx={{ width: 24, height: 24, backgroundColor: '#fd9a6a', borderRadius: 1 }} />
-          </ToggleButton>
-
-          <ToggleButton value={6}>
-            <Box sx={{ width: 24, height: 24, backgroundColor: '#f0a04b', borderRadius: 1 }} />
-          </ToggleButton>
+          {PALETTE_COLORS.map((color, index) => (
+            <ToggleButton key={color} value={index}>
+              <Box sx={{ backgroundColor: color, borderRadius: 1, height: 24, width: 24 }} />
+            </ToggleButton>
+          ))}
         </ToggleButtonGroup>
       </Box>
     </>
