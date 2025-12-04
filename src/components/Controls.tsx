@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import ControlsContent from './ControlsContent'
 import TuneIcon from '@mui/icons-material/Tune'
 
-const INACTIVITY_TIMEOUT = 2500
+export const INACTIVITY_TIMEOUT = 2500
 
 const Controls = () => {
   const isCanvasReady = useAppStore(state => state.isCanvasReady)

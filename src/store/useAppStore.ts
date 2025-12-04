@@ -3,8 +3,11 @@ import { create } from 'zustand'
 interface AppState {
   // State
   animationPhase: number
+  cursorPosition: { x: number; y: number } | null
   frequency: number // 0 to 1
   isCanvasReady: boolean
+  isCursorActive: boolean
+  isCursorOverCanvas: boolean
   resolution: number // 0 to 1
   selectedPalette: number
   speed: number // 0 to 1
@@ -18,6 +21,9 @@ interface AppState {
   // Actions
   setAnimationPhase: (phase: number | ((previous: number) => number)) => void
   setCanvasReady: (ready: boolean) => void
+  setCursorActive: (isActive: boolean) => void
+  setCursorOverCanvas: (isOver: boolean) => void
+  setCursorPosition: (position: { x: number; y: number } | null) => void
   setFrequency: (frequency: number) => void
   setResolution: (resolution: number) => void
   setSelectedPalette: (index: number) => void
@@ -51,8 +57,11 @@ export const useAppStore = create<AppState>((set, get) => ({
   // Initial State
 
   animationPhase: 0,
+  cursorPosition: null,
   frequency: 0.5,
   isCanvasReady: false,
+  isCursorActive: true,
+  isCursorOverCanvas: false,
   resolution: 0.75,
   selectedPalette: 0,
   speed: 0.25,
@@ -94,6 +103,12 @@ export const useAppStore = create<AppState>((set, get) => ({
     })),
 
   setCanvasReady: (ready: boolean) => set({ isCanvasReady: ready }),
+
+  setCursorActive: (isActive: boolean) => set({ isCursorActive: isActive }),
+
+  setCursorOverCanvas: (isOver: boolean) => set({ isCursorOverCanvas: isOver }),
+
+  setCursorPosition: (position: { x: number; y: number } | null) => set({ cursorPosition: position }),
 
   setFrequency: (frequency: number) => set({ frequency, animationPhase: 0 }),
 

@@ -10,6 +10,7 @@ import {
   ROSE_VIOLET_LUT,
   TEAL_NAVY_LUT,
 } from '@/utils/palettes'
+import { INACTIVITY_TIMEOUT } from '@/components/Controls'
 
 // Vertex shader: Fullscreen quad.
 const VERTEX_SHADER = `
@@ -63,12 +64,46 @@ const Canvas = ({ cellSize, columns, rows }: CanvasProps) => {
   const frequency = useAppStore(state => state.frequencyScalar())
   const selectedPalette = useAppStore(state => state.selectedPalette)
   const setCanvasReady = useAppStore(state => state.setCanvasReady)
+  const setCursorActive = useAppStore(state => state.setCursorActive)
+  const setCursorOverCanvas = useAppStore(state => state.setCursorOverCanvas)
+  const setCursorPosition = useAppStore(state => state.setCursorPosition)
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const glRef = useRef<WebGLRenderingContext | null>(null)
+  const inactivityTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const programRef = useRef<WebGLProgram | null>(null)
   const texturesRef = useRef<WebGLTexture[]>([])
   const uniformsRef = useRef<Record<string, WebGLUniformLocation | null>>({})
+
+  const handleDoubleClick = () => {
+    document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()
+  }
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    setCursorPosition({ x: event.clientX, y: event.clientY })
+    setCursorActive(true)
+
+    if (inactivityTimeoutRef.current) clearTimeout(inactivityTimeoutRef.current)
+
+    inactivityTimeoutRef.current = setTimeout(() => setCursorActive(false), INACTIVITY_TIMEOUT)
+  }
+
+  const handleMouseEnter = () => {
+    setCursorOverCanvas(true)
+    setCursorActive(true)
+
+    if (inactivityTimeoutRef.current) clearTimeout(inactivityTimeoutRef.current)
+
+    inactivityTimeoutRef.current = setTimeout(() => setCursorActive(false), INACTIVITY_TIMEOUT)
+  }
+
+  const handleMouseLeave = () => {
+    setCursorOverCanvas(false)
+    setCursorPosition(null)
+    setCursorActive(false)
+
+    if (inactivityTimeoutRef.current) clearTimeout(inactivityTimeoutRef.current)
+  }
 
   // Initialize WebGL context and shaders.
   useEffect(() => {
@@ -190,14 +225,19 @@ const Canvas = ({ cellSize, columns, rows }: CanvasProps) => {
     setCanvasReady(true)
   }, [animationPhase, cellSize, columns, frequency, rows, selectedPalette, setCanvasReady])
 
-  const handleDoubleClick = () => {
-    document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()
-  }
+  useEffect(() => {
+    return () => {
+      if (inactivityTimeoutRef.current) clearTimeout(inactivityTimeoutRef.current)
+    }
+  }, [])
 
   return (
     <canvas
       height={rows}
       onDoubleClick={handleDoubleClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
       ref={canvasRef}
       style={{ display: 'block', height: '100%', imageRendering: 'pixelated', width: '100%' }}
       width={columns}
