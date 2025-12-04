@@ -1,17 +1,15 @@
 import { Box, Chip, Slider, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
-import { cellSizeToResolutionValue, resolutionValueToCellSize, useAppStore } from '@/store/useAppStore'
+import { useAppStore } from '@/store/useAppStore'
 
 const ControlsContent = () => {
-  const cellSize = useAppStore(state => state.cellSize)
+  const resolution = useAppStore(state => state.resolution)
   const colorShift = useAppStore(state => state.colorShift)
-  const patternIntensity = useAppStore(state => state.patternIntensity)
-  const speedIntensity = useAppStore(state => state.speedIntensity)
-  const setCellSize = useAppStore(state => state.setCellSize)
+  const frequency = useAppStore(state => state.frequency)
+  const speed = useAppStore(state => state.speed)
+  const setResolution = useAppStore(state => state.setResolution)
   const setColorShift = useAppStore(state => state.setColorShift)
-  const setPatternIntensity = useAppStore(state => state.setPatternIntensity)
-  const setSpeedIntensity = useAppStore(state => state.setSpeedIntensity)
-
-  const normalizedResolution = cellSizeToResolutionValue(cellSize)
+  const setFrequency = useAppStore(state => state.setFrequency)
+  const setSpeed = useAppStore(state => state.setSpeed)
 
   return (
     <>
@@ -21,12 +19,7 @@ const ControlsContent = () => {
             Resolution
           </Typography>
 
-          <Chip
-            label={normalizedResolution.toFixed(2)}
-            size="small"
-            variant="outlined"
-            sx={{ height: 24, fontWeight: 500 }}
-          />
+          <Chip label={resolution.toFixed(2)} size="small" variant="outlined" sx={{ height: 24, fontWeight: 500 }} />
         </Box>
 
         <Slider
@@ -35,9 +28,9 @@ const ControlsContent = () => {
           max={1}
           size="small"
           step={0.01}
-          value={normalizedResolution}
+          value={resolution}
           onChange={(_, value) => {
-            if (typeof value === 'number') setCellSize(resolutionValueToCellSize(value))
+            if (typeof value === 'number') setResolution(value)
           }}
         />
       </Box>
@@ -48,12 +41,7 @@ const ControlsContent = () => {
             Frequency
           </Typography>
 
-          <Chip
-            label={patternIntensity.toFixed(2)}
-            size="small"
-            variant="outlined"
-            sx={{ height: 24, fontWeight: 500 }}
-          />
+          <Chip label={frequency.toFixed(2)} size="small" variant="outlined" sx={{ height: 24, fontWeight: 500 }} />
         </Box>
 
         <Slider
@@ -62,8 +50,8 @@ const ControlsContent = () => {
           max={1}
           size="small"
           step={0.01}
-          value={patternIntensity}
-          onChange={(_, value) => setPatternIntensity(value as number)}
+          value={frequency}
+          onChange={(_, value) => setFrequency(value as number)}
         />
       </Box>
 
@@ -73,12 +61,7 @@ const ControlsContent = () => {
             Speed
           </Typography>
 
-          <Chip
-            label={speedIntensity.toFixed(2)}
-            size="small"
-            variant="outlined"
-            sx={{ height: 24, fontWeight: 500 }}
-          />
+          <Chip label={speed.toFixed(2)} size="small" variant="outlined" sx={{ height: 24, fontWeight: 500 }} />
         </Box>
 
         <Slider
@@ -87,8 +70,8 @@ const ControlsContent = () => {
           max={1}
           size="small"
           step={0.01}
-          value={speedIntensity}
-          onChange={(_, value) => setSpeedIntensity(value as number)}
+          value={speed}
+          onChange={(_, value) => setSpeed(value as number)}
         />
       </Box>
 

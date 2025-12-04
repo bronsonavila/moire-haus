@@ -61,7 +61,7 @@ type CanvasProps = {
 }
 
 const Canvas = ({ cellSize, colorShift, columns, index, rows }: CanvasProps) => {
-  const frequency = useAppStore(state => state.pattern())
+  const frequency = useAppStore(state => state.frequencyScalar())
   const offset = useAppStore(state => state.patternOffset)
   const setCanvasReady = useAppStore(state => state.setCanvasReady)
 

@@ -6,9 +6,9 @@ import Canvas from '@/components/Canvas'
 import Controls from '@/components/Controls'
 
 const HomePage = () => {
-  const cellSize = useAppStore(state => state.cellSize)
+  const cellSize = useAppStore(state => state.cellSize())
   const colorShift = useAppStore(state => state.colorShift)
-  const speed = useAppStore(state => state.speed())
+  const speed = useAppStore(state => state.speedScalar())
   const windowSize = useAppStore(state => state.windowSize)
   const setPatternOffset = useAppStore(state => state.setPatternOffset)
   const setWindowSize = useAppStore(state => state.setWindowSize)
