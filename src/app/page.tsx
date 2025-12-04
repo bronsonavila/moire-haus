@@ -2,9 +2,7 @@
 
 import { useAppStore } from '@/store/useAppStore'
 import { useCallback, useEffect, useRef } from 'react'
-import { useWebGL } from '@/hooks/useWebGL'
 import Canvas from '@/components/Canvas'
-import CanvasWebGL from '@/components/CanvasWebGL'
 import Controls from '@/components/Controls'
 
 const HomePage = () => {
@@ -17,8 +15,6 @@ const HomePage = () => {
 
   const requestRef = useRef<number>()
   const speedRef = useRef(speed)
-
-  const hasWebGL = useWebGL()
 
   const columns = Math.ceil(windowSize.width / cellSize)
   const rows = Math.ceil(windowSize.height / cellSize)
@@ -53,12 +49,9 @@ const HomePage = () => {
 
   return (
     <main>
-      {windowSize.width > 0 &&
-        (hasWebGL ? (
-          <CanvasWebGL cellSize={cellSize} colorShift={colorShift} columns={columns} index={0} rows={rows} />
-        ) : (
-          <Canvas cellSize={cellSize} colorShift={colorShift} columns={columns} index={0} rows={rows} />
-        ))}
+      {windowSize.width > 0 && (
+        <Canvas cellSize={cellSize} colorShift={colorShift} columns={columns} index={0} rows={rows} />
+      )}
 
       <Controls />
     </main>

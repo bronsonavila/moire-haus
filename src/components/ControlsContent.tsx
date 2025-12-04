@@ -1,6 +1,5 @@
 import { Box, Chip, Slider, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
 import { useAppStore } from '@/store/useAppStore'
-import { useWebGL } from '@/hooks/useWebGL'
 
 const ControlsContent = () => {
   const cellSize = useAppStore(state => state.cellSize)
@@ -12,11 +11,9 @@ const ControlsContent = () => {
   const setPatternIntensity = useAppStore(state => state.setPatternIntensity)
   const setSpeedIntensity = useAppStore(state => state.setSpeedIntensity)
 
-  const hasWebGL = useWebGL()
-
-  // Resolution range: WebGL can handle cellSize down to 1, CPU needs min 4
+  // Resolution range handled entirely by the WebGL renderer.
   const resolutionMin = 1
-  const resolutionMax = hasWebGL ? 35 : 32
+  const resolutionMax = 35
   const resolutionSum = resolutionMin + resolutionMax
 
   return (
