@@ -30,22 +30,21 @@ interface WindowSize {
   width: number
 }
 
-export const RESOLUTION_MIN = 1
-export const RESOLUTION_MAX = 31
+const CELL_SIZE_MIN = 1
+const CELL_SIZE_MAX = 16
+const CELL_SIZE_RANGE = CELL_SIZE_MAX - CELL_SIZE_MIN
 
-const RESOLUTION_RANGE = RESOLUTION_MAX - RESOLUTION_MIN
+const FREQUENCY_MAX = 2 ** 20
 
-const MAX_FREQUENCY = 2 ** 20
-
-const MIN_SPEED = 0
-const MAX_SPEED = 0.05
+const SPEED_MIN = 0
+const SPEED_MAX = 0.05
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max)
 
 export const resolutionValueToCellSize = (value: number) => {
   const normalizedValue = clamp(value, 0, 1)
 
-  return clamp(RESOLUTION_MAX - normalizedValue * RESOLUTION_RANGE, RESOLUTION_MIN, RESOLUTION_MAX)
+  return clamp(CELL_SIZE_MAX - normalizedValue * CELL_SIZE_RANGE, CELL_SIZE_MIN, CELL_SIZE_MAX)
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
@@ -63,8 +62,8 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   cellSize: () => resolutionValueToCellSize(get().resolution),
 
-  // Converts linear 0-1 slider value to exponential pattern frequency.
   frequencyScalar: () => {
+    // Converts linear 0-1 slider value to exponential pattern frequency.
     const state = get()
 
     // Smooth the top end to avoid aliasing: compress 0.95-1.0 more gradually.
@@ -77,14 +76,14 @@ export const useAppStore = create<AppState>((set, get) => ({
       adjustedFrequency = 0.95 + overage * 0.04 // 0.95→0.99
     }
 
-    return adjustedFrequency === 0 ? 0 : Math.pow(MAX_FREQUENCY, adjustedFrequency) - 1
+    return adjustedFrequency === 0 ? 0 : Math.pow(FREQUENCY_MAX, adjustedFrequency) - 1
   },
 
-  // Maps linear 0-1 slider value to animation speed range.
   speedScalar: () => {
+    // Maps linear 0-1 slider value to animation speed range.
     const state = get()
 
-    return MIN_SPEED + state.speed * (MAX_SPEED - MIN_SPEED)
+    return SPEED_MIN + state.speed * (SPEED_MAX - SPEED_MIN)
   },
 
   // Actions
