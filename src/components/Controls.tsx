@@ -176,16 +176,15 @@ const Controls = () => {
           <Paper
             elevation={3}
             sx={{
-              position: 'fixed',
-              right: '1rem',
-              top: '1rem',
-              width: 280,
-              zIndex: 1000,
-              p: 2,
-              borderRadius: 2,
               backdropFilter: 'blur(4px)',
               bgcolor: 'rgba(255,255,255,0.95)',
+              borderRadius: 2,
+              bottom: '1rem',
               boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+              p: 2,
+              position: 'fixed',
+              right: '1rem',
+              width: 280,
             }}
           >
             <Stack spacing={2} sx={{ width: '100%' }}>
@@ -220,13 +219,12 @@ const Controls = () => {
               sx={{
                 backdropFilter: 'blur(4px)',
                 bgcolor: 'rgba(255,255,255,0.85)',
+                bottom: '1rem',
                 boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
                 height: 48,
                 position: 'fixed',
                 right: '1rem',
-                top: '1rem',
                 width: 48,
-                zIndex: 1,
                 '&:hover': {
                   bgcolor: 'rgba(255,255,255,0.95)',
                   boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
@@ -249,16 +247,15 @@ const Controls = () => {
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
         sx={{
+          backdropFilter: 'blur(4px)',
+          bgcolor: 'rgba(255,255,255,0.9)',
+          borderRadius: 2,
+          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+          p: 2,
           position: 'fixed',
           right: '1rem',
           top: '1rem',
           width: 280,
-          zIndex: 1000,
-          p: 2,
-          borderRadius: 2,
-          backdropFilter: 'blur(4px)',
-          bgcolor: 'rgba(255,255,255,0.9)',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
         }}
       >
         <Stack spacing={2} sx={{ width: '100%' }}>
