@@ -2,7 +2,7 @@
 
 import { Box } from '@mui/material'
 import { useAppStore } from '@/store/useAppStore'
-import { memo } from 'react'
+import { memo, useEffect, useState } from 'react'
 import {
   AMBER_BROWN,
   GOLD_NOIR,
@@ -29,7 +29,13 @@ const CursorIndicator = () => {
   const isCursorOverCanvas = useAppStore(state => state.isCursorOverCanvas)
   const selectedPalette = useAppStore(state => state.selectedPalette)
 
-  if (!cursorPosition || !isCursorOverCanvas || !isCursorActive) return null
+  const [isTouchDevice, setIsTouchDevice] = useState(false)
+
+  useEffect(() => {
+    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0)
+  }, [])
+
+  if (isTouchDevice || !cursorPosition || !isCursorOverCanvas || !isCursorActive) return null
 
   const glowColor = PALETTE_GLOW_COLORS[selectedPalette] || PALETTE_GLOW_COLORS[0]
 
