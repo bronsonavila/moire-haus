@@ -2,11 +2,11 @@ import { create } from 'zustand'
 
 interface AppState {
   // State
-  colorShift: number
   frequency: number // 0 to 1
   isCanvasReady: boolean
   patternOffset: number
   resolution: number // 0 to 1
+  selectedPalette: number
   speed: number // 0 to 1
   windowSize: WindowSize
 
@@ -17,10 +17,10 @@ interface AppState {
 
   // Actions
   setCanvasReady: (ready: boolean) => void
-  setColorShift: (shift: number) => void
   setFrequency: (frequency: number) => void
   setPatternOffset: (offset: number | ((previous: number) => number)) => void
   setResolution: (resolution: number) => void
+  setSelectedPalette: (index: number) => void
   setSpeed: (speed: number) => void
   setWindowSize: (size: WindowSize) => void
 }
@@ -51,11 +51,11 @@ export const resolutionValueToCellSize = (value: number) => {
 export const useAppStore = create<AppState>((set, get) => ({
   // Initial State
 
-  colorShift: 0,
   frequency: 0.5,
   isCanvasReady: false,
   patternOffset: 0,
   resolution: 0.75,
+  selectedPalette: 0,
   speed: 0.25,
   windowSize: { height: 0, width: 0 },
 
@@ -91,8 +91,6 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   setCanvasReady: (ready: boolean) => set({ isCanvasReady: ready }),
 
-  setColorShift: (shift: number) => set({ colorShift: shift }),
-
   setFrequency: (frequency: number) => set({ frequency, patternOffset: 0 }),
 
   setPatternOffset: (offset: number | ((previous: number) => number)) =>
@@ -101,6 +99,8 @@ export const useAppStore = create<AppState>((set, get) => ({
     })),
 
   setResolution: (resolution: number) => set({ resolution: clamp(resolution, 0, 1) }),
+
+  setSelectedPalette: (index: number) => set({ selectedPalette: index }),
 
   setSpeed: (speed: number) => set({ speed }),
 

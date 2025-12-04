@@ -7,7 +7,6 @@ import Controls from '@/components/Controls'
 
 const HomePage = () => {
   const cellSize = useAppStore(state => state.cellSize())
-  const colorShift = useAppStore(state => state.colorShift)
   const speed = useAppStore(state => state.speedScalar())
   const windowSize = useAppStore(state => state.windowSize)
   const setPatternOffset = useAppStore(state => state.setPatternOffset)
@@ -49,9 +48,7 @@ const HomePage = () => {
 
   return (
     <main>
-      {windowSize.width > 0 && (
-        <Canvas cellSize={cellSize} colorShift={colorShift} columns={columns} index={0} rows={rows} />
-      )}
+      {windowSize.width > 0 && <Canvas cellSize={cellSize} columns={columns} rows={rows} />}
 
       <Controls />
     </main>

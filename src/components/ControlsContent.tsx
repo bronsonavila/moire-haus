@@ -53,13 +53,13 @@ const ControlSlider = ({ label, max = 1, min = 0, onChange, step = 0.01, value }
 )
 
 const ControlsContent = () => {
-  const resolution = useAppStore(state => state.resolution)
-  const colorShift = useAppStore(state => state.colorShift)
   const frequency = useAppStore(state => state.frequency)
+  const resolution = useAppStore(state => state.resolution)
+  const selectedPalette = useAppStore(state => state.selectedPalette)
   const speed = useAppStore(state => state.speed)
-  const setResolution = useAppStore(state => state.setResolution)
-  const setColorShift = useAppStore(state => state.setColorShift)
   const setFrequency = useAppStore(state => state.setFrequency)
+  const setResolution = useAppStore(state => state.setResolution)
+  const setSelectedPalette = useAppStore(state => state.setSelectedPalette)
   const setSpeed = useAppStore(state => state.setSpeed)
 
   return (
@@ -79,7 +79,7 @@ const ControlsContent = () => {
           exclusive
           fullWidth
           onChange={(_, value) => {
-            if (value !== null) setColorShift(value)
+            if (value !== null) setSelectedPalette(value)
           }}
           size="small"
           sx={{
@@ -95,7 +95,7 @@ const ControlsContent = () => {
               '&:hover': { backgroundColor: 'rgba(0,0,0,0.02)' },
             },
           }}
-          value={colorShift}
+          value={selectedPalette}
         >
           {PALETTE_GRADIENTS.map((palette, index) => (
             <ToggleButton key={index} value={index}>

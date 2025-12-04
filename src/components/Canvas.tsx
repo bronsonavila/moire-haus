@@ -54,15 +54,14 @@ void main() {
 
 type CanvasProps = {
   cellSize: number
-  colorShift: number
   columns: number
-  index: number
   rows: number
 }
 
-const Canvas = ({ cellSize, colorShift, columns, index, rows }: CanvasProps) => {
+const Canvas = ({ cellSize, columns, rows }: CanvasProps) => {
   const frequency = useAppStore(state => state.frequencyScalar())
   const offset = useAppStore(state => state.patternOffset)
+  const selectedPalette = useAppStore(state => state.selectedPalette)
   const setCanvasReady = useAppStore(state => state.setCanvasReady)
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -132,7 +131,6 @@ const Canvas = ({ cellSize, colorShift, columns, index, rows }: CanvasProps) => 
       palette: gl.getUniformLocation(program, 'u_palette'),
     }
 
-    // Upload palette textures in order (Cool to Warm).
     const createPaletteTexture = (data: Uint8Array) => {
       const texture = gl.createTexture()!
       gl.bindTexture(gl.TEXTURE_2D, texture)
@@ -144,6 +142,7 @@ const Canvas = ({ cellSize, colorShift, columns, index, rows }: CanvasProps) => 
       return texture
     }
 
+    // Upload palette textures in order (Cool to Warm).
     texturesRef.current = [
       createPaletteTexture(TEAL_NAVY_LUT),
       createPaletteTexture(MINT_INDIGO_LUT),
@@ -180,7 +179,7 @@ const Canvas = ({ cellSize, colorShift, columns, index, rows }: CanvasProps) => 
     gl.uniform1f(uniforms.patternOffset, offset)
 
     // Bind the selected palette texture.
-    const paletteTexture = textures[colorShift] || textures[0]
+    const paletteTexture = textures[selectedPalette] || textures[0]
     gl.activeTexture(gl.TEXTURE0)
     gl.bindTexture(gl.TEXTURE_2D, paletteTexture)
     gl.uniform1i(uniforms.palette, 0)
@@ -189,7 +188,7 @@ const Canvas = ({ cellSize, colorShift, columns, index, rows }: CanvasProps) => 
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
 
     setCanvasReady(true)
-  }, [columns, rows, frequency, offset, colorShift, cellSize, index, setCanvasReady])
+  }, [cellSize, columns, frequency, offset, rows, selectedPalette, setCanvasReady])
 
   return (
     <canvas
