@@ -190,9 +190,14 @@ const Canvas = ({ cellSize, columns, rows }: CanvasProps) => {
     setCanvasReady(true)
   }, [animationPhase, cellSize, columns, frequency, rows, selectedPalette, setCanvasReady])
 
+  const handleDoubleClick = () => {
+    document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()
+  }
+
   return (
     <canvas
       height={rows}
+      onDoubleClick={handleDoubleClick}
       ref={canvasRef}
       style={{ display: 'block', height: '100%', imageRendering: 'pixelated', width: '100%' }}
       width={columns}
