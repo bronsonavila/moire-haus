@@ -1,14 +1,24 @@
 import { Box, Chip, Slider, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
 import { useAppStore } from '@/store/useAppStore'
+import {
+  AMBER_BROWN,
+  GOLD_NOIR,
+  LIME_PURPLE,
+  MINT_INDIGO,
+  PEACH_CHARCOAL,
+  ROSE_VIOLET,
+  TEAL_NAVY,
+} from '@/utils/palettes'
 
-const PALETTE_COLORS = [
-  '#3577ae', // TEAL_NAVY
-  '#35a1ab', // MINT_INDIGO
-  '#55c667', // LIME_PURPLE
-  '#db5087', // ROSE_VIOLET
-  '#c55a68', // PEACH_CHARCOAL
-  '#fd9a6a', // GOLD_NOIR
-  '#f0a04b', // AMBER_BROWN
+// Use representative colors from each palette (early and mid-range positions).
+const PALETTE_GRADIENTS = [
+  { left: TEAL_NAVY[4], right: TEAL_NAVY[11] }, // Bright cyan → Teal
+  { left: MINT_INDIGO[4], right: MINT_INDIGO[11] }, // Mint → Aqua
+  { left: LIME_PURPLE[2], right: LIME_PURPLE[14] }, // Lime → Blue
+  { left: ROSE_VIOLET[3], right: ROSE_VIOLET[10] }, // Pink → Magenta
+  { left: PEACH_CHARCOAL[3], right: PEACH_CHARCOAL[9] }, // Peach → Crimson
+  { left: GOLD_NOIR[4], right: GOLD_NOIR[10] }, // Gold → Magenta
+  { left: AMBER_BROWN[4], right: AMBER_BROWN[12] }, // Orange → Brown
 ]
 
 type ControlSliderProps = {
@@ -87,9 +97,21 @@ const ControlsContent = () => {
           }}
           value={colorShift}
         >
-          {PALETTE_COLORS.map((color, index) => (
-            <ToggleButton key={color} value={index}>
-              <Box sx={{ backgroundColor: color, borderRadius: 1, height: 24, width: 24 }} />
+          {PALETTE_GRADIENTS.map((palette, index) => (
+            <ToggleButton key={index} value={index}>
+              <Box
+                sx={{
+                  alignItems: 'center',
+                  backgroundColor: palette.left,
+                  borderRadius: 1,
+                  display: 'flex',
+                  height: 24,
+                  justifyContent: 'center',
+                  width: 24,
+                }}
+              >
+                <Box sx={{ backgroundColor: palette.right, borderRadius: 0.5, height: 19, width: 11 }} />
+              </Box>
             </ToggleButton>
           ))}
         </ToggleButtonGroup>
