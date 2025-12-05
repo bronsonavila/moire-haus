@@ -1,6 +1,7 @@
+import { Analytics } from '@vercel/analytics/react'
+import Providers from './Providers'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
-import Providers from './Providers'
 
 export const metadata: Metadata = {
   authors: [{ name: 'Bronson Avila', url: 'https://www.bronsonavila.com' }],
@@ -27,6 +28,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <Providers>{children}</Providers>
+
+        <Analytics />
       </body>
     </html>
   )
