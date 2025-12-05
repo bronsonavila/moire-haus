@@ -4,7 +4,7 @@ import { useAppStore } from '@/store/useAppStore'
 import { useCallback, useEffect, useRef } from 'react'
 import Canvas from '@/components/Canvas'
 import Controls from '@/components/Controls'
-import CursorIndicator from '@/components/CursorIndicator'
+import CursorTrail from '@/components/CursorTrail'
 
 const HomePage = () => {
   const cellSize = useAppStore(state => state.cellSize())
@@ -51,7 +51,7 @@ const HomePage = () => {
     <main>
       {windowSize.width > 0 && <Canvas cellSize={cellSize} columns={columns} rows={rows} />}
 
-      <CursorIndicator />
+      <CursorTrail />
 
       <Controls />
     </main>
