@@ -28,7 +28,7 @@ export const metadata: Metadata = {
       {
         alt: 'Moiré Wave Pattern Generator',
         height: 630,
-        url: 'https://moire.haus/screenshot_1200_630.png',
+        url: 'https://moire.haus/screenshot.png',
         width: 1200,
       },
     ],
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     description: 'Moiré wave pattern generator',
-    images: ['https://moire.haus/screenshot_1200_630.png'],
+    images: ['https://moire.haus/screenshot.png'],
     title: 'moire.haus',
   },
 }
