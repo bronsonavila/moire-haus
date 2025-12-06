@@ -58,13 +58,13 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   animationPhase: 0,
   cursorPosition: null,
-  frequency: 0.5,
+  frequency: 0.8,
   isCanvasReady: false,
   isCursorActive: true,
   isCursorOverCanvas: false,
-  resolution: 0.75,
+  resolution: 0.8,
   selectedPalette: 0,
-  speed: 0.25,
+  speed: 0.2,
   windowSize: { height: 0, width: 0 },
 
   // Computed Values
