@@ -185,6 +185,7 @@ const Controls = () => {
               position: 'fixed',
               right: '1rem',
               width: 280,
+              zIndex: 1,
             }}
           >
             <Stack spacing={2} sx={{ width: '100%' }}>
@@ -225,6 +226,7 @@ const Controls = () => {
                 position: 'fixed',
                 right: '1rem',
                 width: 48,
+                zIndex: 1,
                 '&:hover': {
                   bgcolor: 'rgba(255,255,255,0.95)',
                   boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
@@ -256,6 +258,7 @@ const Controls = () => {
           right: '1rem',
           top: '1rem',
           width: 280,
+          zIndex: 1,
         }}
       >
         <Stack spacing={2} sx={{ width: '100%' }}>
