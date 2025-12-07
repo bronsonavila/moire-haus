@@ -181,14 +181,14 @@ const Controls = () => {
               borderRadius: 2,
               bottom: '1rem',
               boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-              p: 2,
+              p: 1.5,
               position: 'fixed',
               right: '1rem',
-              width: 280,
+              width: 340,
               zIndex: 1,
             }}
           >
-            <Stack spacing={2} sx={{ width: '100%' }}>
+            <Stack spacing={1.5} sx={{ width: '100%' }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600 }}>
                   Controls
@@ -206,7 +206,7 @@ const Controls = () => {
                 </IconButton>
               </Box>
 
-              <ControlsContent />
+              <ControlsContent isMobile />
             </Stack>
           </Paper>
         </Collapse>

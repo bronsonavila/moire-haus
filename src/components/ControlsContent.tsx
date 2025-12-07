@@ -32,7 +32,7 @@ type ControlSliderProps = {
 
 const ControlSlider = ({ label, max = 1, min = 0, onChange, step = 0.01, value }: ControlSliderProps) => (
   <Box>
-    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.25 }}>
       <Typography sx={{ color: 'text.secondary' }} variant="body2">
         {label}
       </Typography>
@@ -52,7 +52,11 @@ const ControlSlider = ({ label, max = 1, min = 0, onChange, step = 0.01, value }
   </Box>
 )
 
-const ControlsContent = () => {
+type ControlsContentProps = {
+  isMobile?: boolean
+}
+
+const ControlsContent = ({ isMobile = false }: ControlsContentProps) => {
   const frequency = useAppStore(state => state.frequency)
   const resolution = useAppStore(state => state.resolution)
   const selectedPalette = useAppStore(state => state.selectedPalette)
@@ -71,7 +75,7 @@ const ControlsContent = () => {
       <ControlSlider label="Speed" onChange={setSpeed} value={speed} />
 
       <Box>
-        <Typography sx={{ color: 'text.secondary', mb: 0.5 }} variant="body2">
+        <Typography sx={{ color: 'text.secondary', mb: 0.25 }} variant="body2">
           Palette
         </Typography>
 
@@ -110,7 +114,9 @@ const ControlsContent = () => {
                   width: 24,
                 }}
               >
-                <Box sx={{ backgroundColor: palette.right, borderRadius: 0.5, height: 19, width: 11 }} />
+                <Box
+                  sx={{ backgroundColor: palette.right, borderRadius: 0.5, height: 19, width: isMobile ? 17 : 11 }}
+                />
               </Box>
             </ToggleButton>
           ))}
