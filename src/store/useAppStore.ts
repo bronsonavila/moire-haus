@@ -52,7 +52,7 @@ const BREAKPOINT_DEFAULTS: Record<BreakpointTier, { frequency: number; resolutio
 }
 
 const CELL_SIZE_MIN = 1
-const CELL_SIZE_MAX = 16
+const CELL_SIZE_MAX = 12
 const CELL_SIZE_RANGE = CELL_SIZE_MAX - CELL_SIZE_MIN
 
 const FREQUENCY_MAX = 2 ** 20
